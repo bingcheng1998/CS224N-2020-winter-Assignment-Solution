@@ -4,3 +4,6 @@
 
 # Solution
 
+## 1 Written: Understanding word2vec (23 points)
+
+(a) 
