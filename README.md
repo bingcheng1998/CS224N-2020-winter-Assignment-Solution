@@ -14,7 +14,7 @@
 ## TODO
 
 - [x] Assignment 1: Lecture 1 (2020/10/15)
-- [ ] Assignment 2: Lecture 1-2
+- [x] Assignment 2: Lecture 1-2
 - [ ] Assignment 3: Lecture 5
 - [ ] Assignment 4: Lecture 6-8
 - [ ] Assignment 5: Lecture 11-12
@@ -24,3 +24,6 @@
 ## Notes
 
 - [looperxx.github.io](https://looperxx.github.io/CS224n-2019-01-Introduction%20and%20Word%20Vectors/)
+
+
+
