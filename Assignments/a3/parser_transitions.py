@@ -138,7 +138,7 @@ def minibatch_parse(sentences, model, batch_size):
                 unfinished_parses.remove(each_parse)
                 inds.remove(ind)
     ### END YOUR CODE
-    print(dependencies)
+    # print(dependencies)
     return dependencies
 
 
