@@ -15,7 +15,7 @@
 
 - [x] Assignment 1: Lecture 1 (2020/10/15)
 - [x] Assignment 2: Lecture 1-2 (2020/10/29)
-- [ ] Assignment 3: Lecture 5
+- [x] Assignment 3: Lecture 5 (2020/10/30)
 - [ ] Assignment 4: Lecture 6-8
 - [ ] Assignment 5: Lecture 11-12
 
