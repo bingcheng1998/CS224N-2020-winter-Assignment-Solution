@@ -120,9 +120,25 @@ def minibatch_parse(sentences, model, batch_size):
     ###             to remove objects from the `unfinished_parses` list. This will free the underlying memory that
     ###             is being accessed by `partial_parses` and may cause your code to crash.
 
-
+    dependencies = [None for i in range(len(sentences))]
+    inds = [i for i in range(len(sentences))] # important for making the position of dependencies right
+    partial_parses = [PartialParse(sentence) for sentence in sentences]
+    unfinished_parses = partial_parses
+    while len(unfinished_parses) is not 0:
+        batch_parses = unfinished_parses[:batch_size]
+        batch_inds = inds[:batch_size]
+        transitions = model.predict(batch_parses)
+        for i in range(len(batch_parses)): # reverse to avoid delete error
+            each_parse = batch_parses[i]
+            transition = transitions[i]
+            ind = batch_inds[i]
+            each_parse.parse_step(transition)
+            if len(each_parse.stack) == 1 and len(each_parse.buffer) == 0: # parse finished
+                dependencies[ind] = each_parse.dependencies
+                unfinished_parses.remove(each_parse)
+                inds.remove(ind)
     ### END YOUR CODE
-
+    print(dependencies)
     return dependencies
 
 
