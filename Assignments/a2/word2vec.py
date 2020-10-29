@@ -169,14 +169,16 @@ def skipgram(currentCenterWord, windowSize, outsideWords, word2Ind,
     gradOutsideVectors = np.zeros(outsideVectors.shape)
 
     ### YOUR CODE HERE (~8 Lines)
-    centerWordVec = centerWordVectors[word2Ind[currentCenterWord]]
-    for outsideWord in outsideWords:
-        loss_, gradCenterVec, gradOutsideVecs = \
-        word2vecLossAndGradient(centerWordVec, word2Ind[outsideWord], outsideVectors, dataset)
-        loss += loss_
-        gradCenterVecs += gradCenterVec
+    v_c_ind = word2Ind[currentCenterWord]
+    v_c = centerWordVectors[v_c_ind]
+    for w in outsideWords:
+        w_ind = word2Ind[w]
+        u_w = outsideVectors[w_ind]
+        loss_w, gradCenterVec, gradOutsideVecs = word2vecLossAndGradient(v_c, w_ind, outsideVectors, dataset)
+        loss += loss_w
         gradOutsideVectors += gradOutsideVecs
-    gradCenterVecs[np.arange(gradCenterVecs.shape[0]) != word2Ind[currentCenterWord]] = 0
+        gradCenterVecs[v_c_ind] += gradCenterVec
+
     ### END YOUR CODE
     
     return loss, gradCenterVecs, gradOutsideVectors
