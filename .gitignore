@@ -10,3 +10,6 @@ Assignments/未命名.ipynb
 .idea/
 Assignments/a2/word2vec的副本.py
 Assignments/a3/results/
+*.pkl
+Assignments/a4/sanity_check_en_es_data/
+Assignments/a4/en_es_data/
