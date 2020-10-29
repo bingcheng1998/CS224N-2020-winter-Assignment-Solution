@@ -62,12 +62,13 @@ def naiveSoftmaxLossAndGradient(
     ### This numerically stable implementation helps you avoid issues pertaining
     ### to integer overflow. 
 
-    p = softmax(outsideVectors @ centerWordVec)[:, np.newaxis]
-    loss = -np.log(p[outsideWordIdx]).astype(np.float64)
-    gradCenterVec = -outsideVectors[outsideWordIdx] + np.sum(outsideVectors * p, axis=0)
-    gradOutsideVecs = np.dot(p, centerWordVec[:, np.newaxis].T)
-    gradOutsideVecs[outsideWordIdx] -= centerWordVec
+    p = softmax(outsideVectors @ centerWordVec).reshape(-1)
+    loss = -np.log(p[outsideWordIdx])
+    gradCenterVec = (outsideVectors.T @ p).T - outsideVectors[outsideWordIdx]
+    gradOutsideVecs = p.reshape(-1, 1) * centerWordVec
+    gradOutsideVecs[outsideWordIdx] = centerWordVec * (p[outsideWordIdx] - 1)
 
+    
     ### END YOUR CODE
 
     return loss, gradCenterVec, gradOutsideVecs
@@ -114,22 +115,15 @@ def negSamplingLossAndGradient(
     ### YOUR CODE HERE (~10 Lines)
 
     ### Please use your implementation of sigmoid in here.
-    scores = (outsideVectors[indices] @ centerWordVec)[:, np.newaxis]
-    probFromCorpus = sigmoid(scores[0])
-    probNotFromCorpus = sigmoid(-scores[1:])
-    loss = -np.log(probFromCorpus) - np.sum(np.log(probNotFromCorpus), axis=0)
-    gradFromCorpus = -outsideVectors[outsideWordIdx] * (1 - probFromCorpus)
-    gradNotFromCorpus = np.sum(
-        outsideVectors[negSampleWordIndices] * (1 - probNotFromCorpus), axis=0)
-    gradCenterVec = gradFromCorpus + gradNotFromCorpus
-
+    u_o = outsideVectors[outsideWordIdx]
+    u_k = outsideVectors[negSampleWordIndices]
+    loss = -np.log(sigmoid(u_o @ centerWordVec)) - np.sum(np.log(sigmoid(- u_k @ centerWordVec)))
+    gradCenterVec = -u_o * sigmoid(-u_o @ centerWordVec) + u_k.T @ sigmoid(u_k @ centerWordVec)
     gradOutsideVecs = np.zeros(outsideVectors.shape)
-    gradOutsideVecs[outsideWordIdx] = -centerWordVec * (1 - probFromCorpus)
-    gradOutsideVecs[negSampleWordIndices] += centerWordVec * \
-        (1 - probNotFromCorpus)
-    indexCount = np.bincount(indices)[:, np.newaxis]
-    for i in np.unique(indices):
-        gradOutsideVecs[i] *= indexCount[i]
+    sampleVecs = sigmoid(u_k @ centerWordVec).reshape(-1,1) * centerWordVec
+    for i in range(len(negSampleWordIndices)):
+        gradOutsideVecs[negSampleWordIndices[i]] += sampleVecs[i]
+    gradOutsideVecs[outsideWordIdx] = -sigmoid(- u_o @ centerWordVec) * centerWordVec
     ### END YOUR CODE
 
     return loss, gradCenterVec, gradOutsideVecs
