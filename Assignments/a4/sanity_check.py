@@ -119,7 +119,8 @@ def question_1d_sanity_check(model, src_sents, tgt_sents, vocab):
     # Test
     with torch.no_grad():
         enc_hiddens_pred, dec_init_state_pred = model.encode(source_padded, source_lengths)
-    assert(np.allclose(enc_hiddens_target.numpy(), enc_hiddens_pred.numpy())), "enc_hiddens is incorrect: it should be:\n {} but is:\n{}".format(enc_hiddens_target, enc_hiddens_pred)
+    assert(np.allclose(enc_hiddens_target.numpy(), enc_hiddens_pred.numpy())), "enc_hiddens is incorrect: \nSize should be {} but is {}," \
+               " \nit should be:\n {} \nbut is:\n{}".format(enc_hiddens_target.shape, enc_hiddens_pred.shape, enc_hiddens_target, enc_hiddens_pred)
     print("enc_hiddens Sanity Checks Passed!")
     assert(np.allclose(dec_init_state_target[0].numpy(), dec_init_state_pred[0].numpy())), "dec_init_state[0] is incorrect: it should be:\n {} but is:\n{}".format(dec_init_state_target[0], dec_init_state_pred[0])
     print("dec_init_state[0] Sanity Checks Passed!")

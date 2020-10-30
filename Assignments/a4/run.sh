@@ -1,4 +1,6 @@
 #!/bin/bash
+export LANG="en_US.UTF-8"
+source /Users/bingcheng/.bash_profile
 
 if [ "$1" = "train" ]; then
 	CUDA_VISIBLE_DEVICES=0 python run.py train --train-src=./en_es_data/train.es --train-tgt=./en_es_data/train.en --dev-src=./en_es_data/dev.es --dev-tgt=./en_es_data/dev.en --vocab=vocab.json --cuda

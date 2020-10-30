@@ -56,10 +56,11 @@ class ModelEmbeddings(nn.Module):
         # pad_sents(vocab.src, src_pad_token_idx)
         # self.target = pad_sents(vocab.tgt, tgt_pad_token_idx)
 
-        src_embedding = nn.Embedding(num_embeddings=len(vocab.src), embedding_dim=self.embed_size)
-        self.source = src_embedding(vocab.src)
-        tgt_embedding = nn.Embedding(num_embeddings=len(vocab.tgt), embedding_dim=self.embed_size)
-        self.target = tgt_embedding(vocab.src)
+        self.source = nn.Embedding(num_embeddings=len(vocab.src), embedding_dim=self.embed_size, padding_idx=src_pad_token_idx)
+        self.target = nn.Embedding(num_embeddings=len(vocab.tgt), embedding_dim=self.embed_size, padding_idx=tgt_pad_token_idx)
+
+        # tgt_embedding = nn.Embedding(num_embeddings=len(vocab.tgt), embedding_dim=self.embed_size)
+        # self.target = tgt_embedding(vocab.src)
 
         ### END YOUR CODE
 
