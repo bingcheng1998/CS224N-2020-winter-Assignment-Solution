@@ -160,6 +160,11 @@ class VocabEntry(object):
         ###     - You may find .contiguous() useful after reshaping. Check the following links for more details:
         ###         https://pytorch.org/docs/stable/tensors.html#torch.Tensor.contiguous
         ###         https://pytorch.org/docs/stable/tensors.html#torch.Tensor.view
+        char_idxes = self.words2charindices(sents)
+        char_idxes_padded = torch.Tensor(pad_sents_char(char_idxes, self.char_pad))
+        char_idxes_padded = char_idxes_padded.contiguous()
+        batch_size, max_sentence_length, max_word_length = char_idxes_padded.size()
+        return char_idxes_padded.view(max_sentence_length, batch_size, max_word_length)
 
         ### END YOUR CODE
 

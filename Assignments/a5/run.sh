@@ -1,4 +1,5 @@
 #!/bin/bash
+source ~/.bash_profile
 
 if [ "$1" = "train" ]; then
 	CUDA_VISIBLE_DEVICES=0 python run.py train --train-src=./en_es_data/train.es --train-tgt=./en_es_data/train.en \

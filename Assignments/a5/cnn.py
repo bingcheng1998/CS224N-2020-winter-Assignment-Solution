@@ -9,12 +9,12 @@ import torch
 import torch.nn as nn
 
 class CNN(nn.Module):
-    pass
-    # Remember to delete the above 'pass' after your implementation
     ### YOUR CODE HERE for part 1g
+    def __init__(self, ):
+        super(CNN, self).__init__()
 
-
-
+    def forward(self, x):
+        pass
 
     ### END YOUR CODE
 
