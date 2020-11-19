@@ -85,3 +85,18 @@ Final evaluation on test set
 Done!
 ```
 
+## Assignment 4
+
+
+
+## Assignment 5
+
+> **! Caution**
+>
+> When using `torch.tensor()`, you must manually state `dtype` and `device`.
+>
+> Without state `dtype`, one error may occur:
+>
+> > RuntimeError: Expected tensor for argument #1 'indices' to have scalar type Long; but got torch.FloatTensor instead (while checking arguments for embedding)
+>
+> Which means you should state `dtype = torch.long`.

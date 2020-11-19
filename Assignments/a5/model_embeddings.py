@@ -9,7 +9,7 @@ Sahil Chopra <schopra8@stanford.edu>
 Anand Dhoot <anandd@stanford.edu>
 Michael Hahn <mhahn2@stanford.edu>
 """
-
+import torch
 import torch.nn as nn
 
 # Do not change these imports; your module names should be
@@ -39,7 +39,15 @@ class ModelEmbeddings(nn.Module):
         super(ModelEmbeddings, self).__init__()
 
         ### YOUR CODE HERE for part 1h
-
+        self.word_embed_size = word_embed_size
+        e_char = 50
+        char_pad = vocab.char_pad
+        num_embeddings = len(vocab.char2id)
+        self.embedding = nn.Embedding(num_embeddings, embedding_dim=e_char,
+                                   padding_idx=char_pad)
+        self.cnn = CNN(e_char, word_embed_size)
+        self.highway = Highway(word_embed_size)
+        self.dropout = nn.Dropout(0.3)
         ### END YOUR CODE
 
     def forward(self, input):
@@ -52,6 +60,17 @@ class ModelEmbeddings(nn.Module):
             CNN-based embeddings for each word of the sentences in the batch
         """
         ### YOUR CODE HERE for part 1h
-
+        sentence_length, batch_size, max_word_length = input.size()
+        # output = torch.zeros([sentence_length, batch_size, self.word_embed_size])
+        output = []
+        for batch in input:
+            X_emb = self.embedding(batch)
+            # print(X_emb.size())
+            X_reshaped = X_emb.permute(0, 2, 1)
+            X_conv_out = self.cnn(X_reshaped)
+            X_highway = self.highway(X_conv_out)
+            # output[i] = self.dropout(X_highway)
+            output.append(self.dropout(X_highway))
+        return torch.stack(output)
         ### END YOUR CODE
 

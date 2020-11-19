@@ -6,6 +6,7 @@ CS224N 2019-20: Homework 5
 sanity_check.py: sanity checks for assignment 5
 Usage:
     sanity_check.py 1e
+    sanity_check.py 1g
     sanity_check.py 1f
     sanity_check.py 1h
     sanity_check.py 2a
@@ -29,6 +30,7 @@ from highway import Highway
 
 from char_decoder import CharDecoder
 from nmt_model import NMT
+from cnn import CNN
 
 import torch
 import torch.nn as nn
@@ -103,6 +105,21 @@ def question_1f_sanity_check():
     assert not highway_out.equal(X_conv_out)
     print("-" * 80)
     print("Sanity Check Passed for Question 1f: Highway Network!")
+    print("-" * 80)
+
+def question_1g_sanity_check():
+    """ Sanity check for to_input_tensor_char() function.
+    """
+    print("-" * 80)
+    print("Running Sanity Check for Question 1g: CNN")
+    print("-" * 80)
+    x_reshaped = torch.randn(2, 3, 6)
+    m = CNN(3, 4)
+    x_conv_out = m(x_reshaped)
+    print( '\ninput:',x_reshaped.size(),'\n',x_reshaped, '\noutput:',x_conv_out.size(),'\n', x_conv_out)
+    assert list(x_conv_out.size()) == [2, 4]
+    print("-" * 80)
+    print("Sanity Check Passed for Question 1g: CNN!")
     print("-" * 80)
 
 
@@ -220,8 +237,10 @@ def main():
 
     if args['1e']:
         question_1e_sanity_check()
-    if args['1f']:
+    elif args['1f']:
         question_1f_sanity_check()
+    elif args['1g']:
+        question_1g_sanity_check()
     elif args['1h']:
         question_1h_sanity_check(model)
     elif args['2a']:

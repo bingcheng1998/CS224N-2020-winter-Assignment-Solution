@@ -13,3 +13,5 @@ Assignments/a3/results/
 *.pkl
 Assignments/a4/sanity_check_en_es_data/
 Assignments/a4/en_es_data/
+*.bin
+*.optim
