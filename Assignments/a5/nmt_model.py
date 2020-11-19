@@ -118,8 +118,8 @@ class NMT(nn.Module):
             max_word_len = target_padded_chars.shape[-1]
 
             target_words = target_padded[1:].contiguous().view(-1)
-            target_chars = target_padded_chars[1:].view(-1, max_word_len)
-            target_outputs = combined_outputs.view(-1, 256)
+            target_chars = target_padded_chars[1:].contiguous().view(-1, max_word_len)
+            target_outputs = combined_outputs.contiguous().view(-1, 256)
 
             target_chars_oov = target_chars  # torch.index_select(target_chars, dim=0, index=oovIndices)
             rnn_states_oov = target_outputs  # torch.index_select(target_outputs, dim=0, index=oovIndices)
@@ -319,7 +319,7 @@ class NMT(nn.Module):
             log_p_t = F.log_softmax(self.target_vocab_projection(att_t), dim=-1)
 
             live_hyp_num = beam_size - len(completed_hypotheses)
-            contiuating_hyp_scores = (hyp_scores.unsqueeze(1).expand_as(log_p_t) + log_p_t).view(-1)
+            contiuating_hyp_scores = (hyp_scores.unsqueeze(1).expand_as(log_p_t) + log_p_t).contiguous().view(-1)
             top_cand_hyp_scores, top_cand_hyp_pos = torch.topk(contiuating_hyp_scores, k=live_hyp_num)
 
             prev_hyp_ids = top_cand_hyp_pos / len(self.vocab.tgt)

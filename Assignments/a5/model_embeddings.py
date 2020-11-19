@@ -47,7 +47,7 @@ class ModelEmbeddings(nn.Module):
                                    padding_idx=char_pad)
         self.cnn = CNN(e_char, word_embed_size)
         self.highway = Highway(word_embed_size)
-        self.dropout = nn.Dropout(0.3)
+        self.dropout = nn.Dropout(p = 0.3)
         ### END YOUR CODE
 
     def forward(self, input):
